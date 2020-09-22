@@ -1,0 +1,42 @@
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(12,11,10,9,8,7);
+int temp ;
+int smoke ;
+int sensmoke = A0;
+int sentemp = A1;
+int speaker = 6;
+void setup()
+{
+  	pinMode(speaker,OUTPUT);
+	lcd.begin(16,2);
+	lcd.clear();
+	lcd.print("this is my");
+  	lcd.setCursor(0,1);
+	lcd.print("Gas alarm");
+	delay(1000);
+  	lcd.clear();
+	lcd.print("the value :");
+}
+
+void loop()
+{
+    temp=analogRead(sentemp);
+    temp = temp * 0.48828125;
+    smoke = analogRead(sensmoke);	
+  	int value = map(smoke,320,750,0,100);
+    value = constrain(value,0,100);
+  	lcd.setCursor(13,0);
+    lcd.print(value);
+ 	lcd.print("%");
+  	lcd.setCursor(1,1);
+  	lcd.print("the temp :");
+  	lcd.setCursor(12,1);
+  	lcd.print(temp);
+    lcd.print("    ");
+  	int tem = temp;
+  	if(tem>65 || value>30){
+    	tone(speaker,250);
+  	}
+ 	else{
+  		noTone(speaker);  
+    }}
